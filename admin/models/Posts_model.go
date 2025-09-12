@@ -43,6 +43,18 @@ func (post Post) Add() {
 			Title: "Go ile web programlama",
 			Slug:  "go-ile-web-programlama",
 		}.Add()
-	 */
+	*/
 	db.Create(&post)
+}
+
+// ÇEŞİTLİ VERİLER GELEBİLİR YANİ İNT, STRİNG vb. DEĞİŞKEN SAYIDA VERİ GELEBİLİR TÜM VERİLERİ TAMAMEN HER HANGİBİR TANIMLAMA YAPMADAN ALABİLMEK İÇİN "Get(where ...interface{})" where ...interface si KULLANIYORUZ.
+func (post Post) Get(where ...interface{}) Post {
+	db, err := gorm.Open(mysql.Open((Dns)), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err)
+		return post
+	}
+	////YUKARIDAKİ func (post Post) İÇERİSİNDEKİ post u VERİYORUZ.
+	db.First(&post, where...) //BURADA ... ÜÇ NOKTA YUKARIDAKİ WHERE İÇERİNDE DEĞİŞKEN SAYIDA VERİ ALIMINDA ... ÜÇ NOKTA İLE PAST EDİYORUZ.
+	return post
 }
