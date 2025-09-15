@@ -23,3 +23,16 @@ func (dashboard Dashboard) Index(w http.ResponseWriter, r *http.Request, params 
 	view.ExecuteTemplate(w, "index", nil) //SİTENİN ÇALIŞTILMASI İÇİN EXECUTE ETMEK GEREKİYOR.
 
 }
+
+// BURADA YAPTIĞIMIZ VİEWS İÇERİSİNDE DASHBOARD İÇERİSİNDE ADD KLASÖRÜ ALTINDAKİ HTML DOSYALARINI ÇAĞIRMA VE ÇALIŞMATA İŞLEMLERİ İÇİN FONKSİYON YAZIYORUZ.
+// DASHBOARD İÇERİSİNDE YENİ BİR FONKSİYON YAZDIKTAN SONRA ROUTE TANIMLAMASI YAPIYORUZKİ ÇALIŞTIRABİLELİM.
+func (dashboard Dashboard) NewItem(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	//helpers.Include KULLANMAMIZIN NEDENİ BÜTÜN HTML DOSYALARINI INCLUDE.GO İÇERİSİNDE ÇAĞIRDIK ONUDA BURADA ÇAĞIRARAK ÇALIŞTIRIYORUZ.
+	view, err := template.ParseFiles(helpers.Include("dashboard/add")...) //DASHBOARD İÇERİNDE ADD KLASÖRÜ İÇERİNDEN HTML DOSYALARINI helpers.Include İÇERİNDEN AL DEMEKTİR.
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	view.ExecuteTemplate(w, "index", nil) //DATA GÖNDERİMİ YAPMIYORUZ BU NEDENLE NİL OLARAK TANIMALMA YAPIYORUZ.
+
+}

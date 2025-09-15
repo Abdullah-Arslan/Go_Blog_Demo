@@ -25,8 +25,8 @@ func main() {
 	//post.Update("title", "BASLIK KISMI DEĞİŞTİ")
 	//post := admin_models.Post{}.Get(1)
 	//post.Updates(admin_models.Post{Title: "Ptyton ile web programlama", Description: "Test"})
-	post := admin_models.Post{}.Get(1) //"where 1" İLE ID ATAMASI YAPIYORUZ YANİ Post_model.go İÇERİSİNDE "func Delete" FONKSİYONU İLE OLŞUTURULAN SİLME İŞLEMİNİN ID 1 DİR DİYEREK ID ATAMASI YAPIYORUZ.
-	post.Delete()
+	//post := admin_models.Post{}.Get(1) //"where 1" İLE ID ATAMASI YAPIYORUZ YANİ Post_model.go İÇERİSİNDE "func Delete" FONKSİYONU İLE OLŞUTURULAN SİLME İŞLEMİNİN ID 1 DİR DİYEREK ID ATAMASI YAPIYORUZ.
+	//post.Delete()
 
 	//MODEL VIEW CONTROLLER
 	//helpers.Include() //HELPERS İÇERİSİNDE OLUŞTURDUGUMUZ Include.html MAİN.GO İÇERİSİNE AKTARIMI
