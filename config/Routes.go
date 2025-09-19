@@ -23,6 +23,8 @@ func Routes() *httprouter.Router {
 	//BU DİZİN GELİRSE /admin/assets/ SEN GİT http.Dir("admin/assets")) ADMİN ALTINDAN  ASSETS KLASÖRÜNE O DİZİNE YÖNLENDİR DİYORUZ.
 	///admin/assets TAM HALİ İNDEX.HTML İÇERİSİNDE MEVCUT /admin/assets/css/sb-admin-2.min.css BUNUN GİBİ CSS VE JS HALİDE MEVCUT.
 	r.ServeFiles("/admin/assets/*filepath", http.Dir("admin/assets"))
+	//KAPAK GÖRSELİNİ ALAMADIK İLK LİST/CONTENT FORM SIRALAMA İŞLEMLERİNİNDE BUNUN NEDENİ BURADA SERVEfİLES YAPMADIGIMIZ İÇİN
+	r.ServeFiles("/uploads/*filepath", http.Dir("uploads"))
 
 	return r
 

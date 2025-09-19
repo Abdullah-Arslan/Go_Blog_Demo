@@ -25,7 +25,10 @@ func (dashboard Dashboard) Index(w http.ResponseWriter, r *http.Request, params 
 		fmt.Println(err)
 		return
 	}
-	view.ExecuteTemplate(w, "index", nil) //SİTENİN ÇALIŞTILMASI İÇİN EXECUTE ETMEK GEREKİYOR.
+	//GÖNDERİLEN FORMLARIN PANELDE LİSTENMESİ KISMINI BURADAN YAPIYORUZ.
+	data := make(map[string]interface{})
+	data["Posts"] = models.Post{}.GetAll() //HEPSİNİ YANİ FORMDAN DOLDURULAN HERŞEYİ ÇEKİP EKRTANA EKLEYECEK
+	view.ExecuteTemplate(w, "index", data) //SİTENİN ÇALIŞTILMASI İÇİN EXECUTE ETMEK GEREKİYOR. ALT TEMALARA DA GİTMESİ İÇİN LİST İÇERİSİNDEKİ İNDEX.HTML İÇERİSİNDE  {{template "content" .}} KISIMINDA . NOKTA KOYUYORUZ.
 
 }
 
@@ -45,7 +48,7 @@ func (dashboard Dashboard) NewItem(w http.ResponseWriter, r *http.Request, param
 // add/content.html İÇERİSİNDEKİ  <form action="/admin/add" method="post" enctype="multipart/form-data"> "/admin/add" deki ADD i FONKSİYON OLARAK YAZIYORUZ
 func (dashboard Dashboard) Add(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	//OLUŞTURACAĞIMIZ KISIMDA FORMDAN GELECEK OLAN VERİLERİ ALACAĞIMIZ KISIMLARI OLUŞTURUYORUZ. BU KISMDA NELERİN OLDUGUNU add/content İÇERİNDE FORMDAKİ KISIMLARA BAKARAK OLUŞTURUYORUZ.
-	title := r.FormValue("blog-stitle")
+	title := r.FormValue("blog-title")
 	slug := slug.Make(title) //SLUG ŞEKLİNDE OLUŞUM SAGLAMAK İÇİN BU KISIM KULLANILIYOR.
 	description := r.FormValue("blog-desc")
 	categoryID, _ := strconv.Atoi(r.FormValue("blog-category")) //strconv.Atoi BURADAKİ KISIM ŞU İŞE YARIYOR categoryID DATABASE DE int DEĞER ALIYOR FORMDAN GELEN VERİ İSE stinrg BİR DEĞERDİR. strconv.Atoi BİZE STRİNG DEĞERİ İNT E ÇEVİRMESİNİ SAĞLIYOR.
