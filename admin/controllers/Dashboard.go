@@ -94,3 +94,26 @@ func (dashboard Dashboard) Add(w http.ResponseWriter, r *http.Request, params ht
 	//TODO ALERT
 
 }
+
+// FROMDA EKLEDİĞİMİZ VERİLERİ SİLME İŞLEMİNİ BURADAKİ KISIM İLE GERÇEKLEŞTİRİYORUZ.
+func (dashboard Dashboard) Delete(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	post := models.Post{}.Get(params.ByName("id")) //PARAMETRELERİ params.ByName İLE ALIYORUZ.
+	post.Delete()
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
+
+}
+
+// dashboar İÇERİSİNDE edit ADINDA YENİ BİR KLASÖR KOPYALIYORUZ BU KLASÖR add DEN KOPYALANDI VE AYNISI, BURADA YAPILACAK OLAN KISIM İSE EDİT İŞELMLERİ İÇİRİSİNDEKİ KISIMLARI KONTROLLÜ
+func (dashboard Dashboard) Edit(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	view, err := template.ParseFiles(helpers.Include("dashboard/edit")...)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	//BURADAKİ İŞLEMİ ALABİŞLMEK İÇİŞN PARAMETRE ORAK EDİT GÖNDERİLMESİ GEREKİYOR ONUDA AŞAĞIDAKİ İŞLEMLER İLE YAPIYORUZ.
+	data := make(map[string]interface{})
+	data["Post"] = models.Post{}.Get(params.ByName("id")) //param.ByName ile EDİT KISMININ id si ALINIYOR.
+	view.ExecuteTemplate(w, "index", data)
+	//NOT: BURADA ÖNEMLİ OLAN YAZDIIMIZ EDİT FONKSİYONUNU edit/content.html İÇERİSİNDE DOGRU YERLERDE TANIMLAMAK MESELA "      <input type="text" name="blog-title" class="form-control" value="{{.Post.Title}}">" GİBİ DĞERLERİNİ DE AYNI ŞEKİLDE VERMEK GEREKİYOR
+
+}

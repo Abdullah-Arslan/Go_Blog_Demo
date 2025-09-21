@@ -16,6 +16,8 @@ func Routes() *httprouter.Router {
 	r.GET("/admin/yeni-ekle", admin.Dashboard{}.NewItem) //DAHSBOARD İÇERİNDE OLUŞTURDUĞUMUZ NewItem FONKSİYONUNU BURADA BU  ŞEKİLDE ÇAĞIRIYORUZ. /admin/yeni-ekle",admin.Dashboard{}.NewItem BU ŞU DEMEK
 	//admin içerisinde yeni-ekle KISMINA TIKLANDIĞINDA BUNU SEN admin.Dashboard{} içerinden NewItem a gideceksin demektir.
 	r.POST("/admin/add", admin.Dashboard{}.Add)
+	r.GET("/admin/delete/:id", admin.Dashboard{}.Delete) //admin/delete:id BURADA GET İLE GELEN PARAMETREYTİ :id  İLE KABUL EDİYORUZ.
+	r.GET("/admin/edit/:id", admin.Dashboard{}.Edit)
 
 	// SERVE FILES
 
