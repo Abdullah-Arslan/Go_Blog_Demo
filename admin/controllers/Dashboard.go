@@ -28,6 +28,7 @@ func (dashboard Dashboard) Index(w http.ResponseWriter, r *http.Request, params 
 	//GÖNDERİLEN FORMLARIN PANELDE LİSTENMESİ KISMINI BURADAN YAPIYORUZ.
 	data := make(map[string]interface{})
 	data["Posts"] = models.Post{}.GetAll() //HEPSİNİ YANİ FORMDAN DOLDURULAN HERŞEYİ ÇEKİP EKRTANA EKLEYECEK
+	data["Alert"] = helpers.GetAlert(w, r) //BİR ALERT VAR MI YOK MU BİR MESAJ VAR MI BİLGİSİ ARTIK BURADA TUTULUYOR.
 	view.ExecuteTemplate(w, "index", data) //SİTENİN ÇALIŞTILMASI İÇİN EXECUTE ETMEK GEREKİYOR. ALT TEMALARA DA GİTMESİ İÇİN LİST İÇERİSİNDEKİ İNDEX.HTML İÇERİSİNDE  {{template "content" .}} KISIMINDA . NOKTA KOYUYORUZ.
 
 }
@@ -87,11 +88,10 @@ func (dashboard Dashboard) Add(w http.ResponseWriter, r *http.Request, params ht
 		Picture_url: "uploads/" + header.Filename,
 		//BURADA YAZDIĞIMIZ KISIMLARIN HEPSİ VERİ TABANINA EKLECEK VE BU VERİLER BİZDEN FORMDAN ALACAK
 
-	}.Add() //TÜM BU İŞLEMLER BİTTİKTEN SONRA routes TANIMLAMASINI Routes.go İÇERİNE YAPIYORUZ.
+	}.Add()                                           //TÜM BU İŞLEMLER BİTTİKTEN SONRA routes TANIMLAMASINI Routes.go İÇERİNE YAPIYORUZ.
+	helpers.SetAlert(w, r, "Kayıt Başarıyla Eklendi") //YAPTIĞIMIZ ALERT İŞLEMİNİ BURADA TANIMLIYORUZ.
 	//routes.go YA EKLEME İŞLEMİNİ YAPTIK AMA BURADAN ORAYA DÖNÜŞ YAPMAMIZ LAZIM AŞAĞIDAKİ KOD İLE DE DÖNÜŞ İŞLEMİNİ GERÇEKLEŞTİRİYORUZ.
 	http.Redirect(w, r, "/admin", http.StatusSeeOther) //BU ŞEKİLDE TEKRAR İSTENEN GİRİLDİKTEN SONRA ANASAYFA YA DÖNÜŞ YAPILACAK. AKSİ TAKDİRDE BOŞ BİR SAYFA GÖRÜNÜR
-
-	//TODO ALERT
 
 }
 
