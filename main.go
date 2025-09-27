@@ -30,5 +30,6 @@ func main() {
 
 	//MODEL VIEW CONTROLLER
 	//helpers.Include() //HELPERS İÇERİSİNDE OLUŞTURDUGUMUZ Include.html MAİN.GO İÇERİSİNE AKTARIMI
+	admin_models.User{}.Migrate()
 	http.ListenAndServe(":8080", config.Routes())
 }
