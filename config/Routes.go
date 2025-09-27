@@ -19,6 +19,10 @@ func Routes() *httprouter.Router {
 	r.GET("/admin/delete/:id", admin.Dashboard{}.Delete) //admin/delete:id BURADA GET İLE GELEN PARAMETREYTİ :id  İLE KABUL EDİYORUZ.
 	r.GET("/admin/edit/:id", admin.Dashboard{}.Edit)
 	r.POST("/admin/update/:id", admin.Dashboard{}.Update)
+
+	//USEROPS
+	r.GET("/admin/login", admin.Userops{}.Index)
+	r.POST("/admin/do_login", admin.Userops{}.Login)
 	// SERVE FILES
 
 	//BURADA YAPILAN index.html SAYFASI İÇERİNDEKİ CSS VE JS DOSYALARINI ÇEKMESİ İÇİN ROUTE TANIMLAMASI YAPIYORUZ.
