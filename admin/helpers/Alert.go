@@ -11,7 +11,7 @@ var store = sessions.NewCookieStore([]byte("123456"))
 
 // SESSİON A EKLENECEK BİLGİYİ DIŞARIDAN ALACAĞIZ ONUDA message string İLE YAPIYORUZ ONU DA session.AddFlash(message) TANITIYORUZ.
 func SetAlert(w http.ResponseWriter, r *http.Request, message string) error {
-	session, err := store.Get(r, "alert-go")
+	session, err := store.Get(r, "go-alert")
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -25,7 +25,7 @@ func SetAlert(w http.ResponseWriter, r *http.Request, message string) error {
 // ALERT İŞLEMİNİ KONTROL EDEBİLMEK İÇİN session DAN BUNU ÇAPIRACAK FONKSİYONA İHTİYAÇ VAR ONUDA AŞAĞIDA YAZIYORUZ.
 func GetAlert(w http.ResponseWriter, r *http.Request) map[string]interface{} {
 
-	session, err := store.Get(r, "alert-go")
+	session, err := store.Get(r, "go-alert")
 	if err != nil {
 		fmt.Println(err)
 		return nil

@@ -20,6 +20,12 @@ type Dashboard struct{}
 
 // BURASI BİZİM CONTROLLERIMIZ YANİ VIEW,TEMPLATE EXECUTE ETTİĞİMİZ KISIMDIR. YANİ ONLARI ÇALIŞTIRIP KOMUT VERİLEN YERDİR.
 func (dashboard Dashboard) Index(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	//Guard işlemlerinin yapıldığı yer
+	if !helpers.CheckUser(w, r) { //ÖNEMLİ: if !helpers.CheckUser(w, r) helpers BAŞINDAKİ ! ÜNLEM İŞARETİ OLMADAN SİTEYE GİRİŞİ YÖNLENDİRMİYOR ADMİN PANELİNDEN MUTLAKA BU OLMALI.
+		return
+
+	}
+
 	view, err := template.ParseFiles(helpers.Include("dashboard/list")...)
 	if err != nil {
 		fmt.Println(err)

@@ -20,7 +20,12 @@ func (userops Userops) Index(w http.ResponseWriter, r *http.Request, params http
 		return
 
 	}
-	view.ExecuteTemplate(w, "index", nil)
+	data := make(map[string]interface{})
+	data["Alert"] = helpers.GetAlert(w, r)
+	err = view.ExecuteTemplate(w, "index", data)
+	if err != nil {
+		fmt.Println("ExecuteTemplate Hatası:", err)
+	}
 
 }
 
@@ -31,14 +36,19 @@ func (userops Userops) Login(w http.ResponseWriter, r *http.Request, params http
 	username := r.FormValue("username")                                           //FORMVLUE İLE USERNAME VE
 	password := fmt.Sprintf("%x", sha256.Sum256([]byte(r.FormValue("password")))) //PASSOWRD ALINIYOR. BURADA YAPILAN İŞLEM GİRİLEN PARALOYI ŞİFRELİ OLARAK BİZE VERMESİ İÇİN SHA256 İLE ŞİFRELEME YAPIYORUZ.
 
-	user := models.User{}.Get("username =? AND password=?", username, password)
+	user := models.User{}.Get("username = ? AND password = ?", username, password)
 
 	//ŞİMDİ BURADA FORMDAN GELEN VERİNİN KONTROL EDİLMESİ İŞLEMİNİ YAPACAĞIZ. BUNUDA İF KOMUTU YAPIYORUZ.
 	if user.Username == username && user.Password == password {
 		//LOGİN GİRİŞ YAPILAN KISIM
+		//KULLANICI DOĞRU KULLANICI ADI VE ŞİFREYİ GİRDİĞİ ZAMAN BU BİLGİLERİ SESSİON A KAYDETMEMİZ GEREKİYOR.
+		helpers.SetUser(w, r, username, password) //kullanıcı giriş yaptıysa sessiona da kayıt ediliyor.
+		helpers.SetAlert(w, r, "Hoş Geldiniz")
 		http.Redirect(w, r, "/admin", http.StatusSeeOther) //BU KISIM GİRİŞ YAPTIKTAN SONRA BİZİ ADMİN ANASAYFASINA YÖNLENDİRİYOR.
 	} else {
+
 		//DENIED ŞİFRE YADA KULLANICI ADI YANLIŞ OLURSA GİRMESİNE İZİN VERİLMEYEN YER YANİ admin/login e GERİ GÖNDERİLECEK YER.
+		helpers.SetAlert(w, r, "Yanlış Kullanıcı Adı veya Şifre")
 		http.Redirect(w, r, "/admin/login", http.StatusSeeOther) //BU KISIM BİZİ YANLIŞ ŞİFRE YADA KULLANICI ADI GİRDİKTEN SONRA TEKRAR GİRİŞ PANEL SAYFASINA YÖNLENDİRİYOR.
 	}
 
