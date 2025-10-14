@@ -36,7 +36,17 @@ func CheckUser(w http.ResponseWriter, r *http.Request) bool {
 	}
 	SetAlert(w, r, "Lütfen Giriş Yapınız")
 	http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
-
 	return false //BURAYA KADAR OLAN KISIMDA GİRİŞ İŞLEMLERİNİN BAŞARILI OLUP OLMADIĞINI BOOL DEĞERİ İLE ALDIK.
 
+}
+
+// GİRİŞ YAPTIKTAN SONRA SESSİON DAKİ VERİLERİ SİLME İŞLEMİ BU ŞEKİLDE YAPILIYOR.
+func RemoveUser(w http.ResponseWriter, r *http.Request) error {
+	session, err := store.Get(r, "blog-user")
+	if err != nil {
+		return err
+	}
+	session.Options.MaxAge = -1
+
+	return session.Save(r, w)
 }

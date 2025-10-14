@@ -23,6 +23,7 @@ func Routes() *httprouter.Router {
 	//USEROPS
 	r.GET("/admin/login", admin.Userops{}.Index)
 	r.POST("/admin/do_login", admin.Userops{}.Login)
+	r.GET("/admin/logout", admin.Userops{}.Logout)
 	// SERVE FILES
 
 	//BURADA YAPILAN index.html SAYFASI İÇERİNDEKİ CSS VE JS DOSYALARINI ÇEKMESİ İÇİN ROUTE TANIMLAMASI YAPIYORUZ.

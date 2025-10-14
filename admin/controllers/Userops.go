@@ -1,5 +1,6 @@
 package controllers
 
+//CONTROLLERS KISMINDA GİRİŞ ÇIKIŞ GİBİ İŞLEMLERİN KONTROL EDİLDİĞİ YERDİR VE BUNUNLA İLGİLİ KODLARIN YAZILDIĞI ALAN.
 import (
 	"crypto/sha256"
 	"fmt"
@@ -53,5 +54,14 @@ func (userops Userops) Login(w http.ResponseWriter, r *http.Request, params http
 	}
 
 	//http.Redirect(w, r, "/admin/login", http.StatusSeeOther) //BU KISMI TAMAMLADIKTAN SONRA Routes.go İÇERİSİNDE ROUTE TANIMLAMASINI POST İLE YAPIYROUZ.
+
+}
+
+// BU KISIMDA helpers/Userops.go DAKİ RomoveUser FONKSİYONUNDA ÇIKIŞ YAPTIKTAN SONRAKİ SESSİONLARI SİLME KOMUTUNU Logout FONKSİYONU İLE KONTROLÜNÜ SAĞLIYORUZ.
+func (userops Userops) Logout(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	helpers.RemoveUser(w, r)
+	helpers.SetAlert(w, r, "Hoşçakalın")
+
+	http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
 
 }

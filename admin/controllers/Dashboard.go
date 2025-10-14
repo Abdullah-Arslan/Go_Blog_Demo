@@ -42,6 +42,10 @@ func (dashboard Dashboard) Index(w http.ResponseWriter, r *http.Request, params 
 // BURADA YAPTIĞIMIZ VİEWS İÇERİSİNDE DASHBOARD İÇERİSİNDE ADD KLASÖRÜ ALTINDAKİ HTML DOSYALARINI ÇAĞIRMA VE ÇALIŞMATA İŞLEMLERİ İÇİN FONKSİYON YAZIYORUZ.
 // DASHBOARD İÇERİSİNDE YENİ BİR FONKSİYON YAZDIKTAN SONRA ROUTE TANIMLAMASI YAPIYORUZKİ ÇALIŞTIRABİLELİM.
 func (dashboard Dashboard) NewItem(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	if !helpers.CheckUser(w, r) { //ÖNEMLİ: if !helpers.CheckUser(w, r) helpers BAŞINDAKİ ! ÜNLEM İŞARETİ OLMADAN SİTEYE GİRİŞİ YÖNLENDİRMİYOR ADMİN PANELİNDEN MUTLAKA BU OLMALI.
+		return
+
+	}
 	//helpers.Include KULLANMAMIZIN NEDENİ BÜTÜN HTML DOSYALARINI INCLUDE.GO İÇERİSİNDE ÇAĞIRDIK ONUDA BURADA ÇAĞIRARAK ÇALIŞTIRIYORUZ.
 	view, err := template.ParseFiles(helpers.Include("dashboard/add")...) //DASHBOARD İÇERİNDE ADD KLASÖRÜ İÇERİNDEN HTML DOSYALARINI helpers.Include İÇERİNDEN AL DEMEKTİR.
 	if err != nil {
@@ -54,6 +58,10 @@ func (dashboard Dashboard) NewItem(w http.ResponseWriter, r *http.Request, param
 
 // add/content.html İÇERİSİNDEKİ  <form action="/admin/add" method="post" enctype="multipart/form-data"> "/admin/add" deki ADD i FONKSİYON OLARAK YAZIYORUZ
 func (dashboard Dashboard) Add(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	if !helpers.CheckUser(w, r) { //ÖNEMLİ: if !helpers.CheckUser(w, r) helpers BAŞINDAKİ ! ÜNLEM İŞARETİ OLMADAN SİTEYE GİRİŞİ YÖNLENDİRMİYOR ADMİN PANELİNDEN MUTLAKA BU OLMALI.
+		return
+
+	}
 	//OLUŞTURACAĞIMIZ KISIMDA FORMDAN GELECEK OLAN VERİLERİ ALACAĞIMIZ KISIMLARI OLUŞTURUYORUZ. BU KISMDA NELERİN OLDUGUNU add/content İÇERİNDE FORMDAKİ KISIMLARA BAKARAK OLUŞTURUYORUZ.
 	title := r.FormValue("blog-title")
 	slug := slug.Make(title) //SLUG ŞEKLİNDE OLUŞUM SAGLAMAK İÇİN BU KISIM KULLANILIYOR.
@@ -103,6 +111,10 @@ func (dashboard Dashboard) Add(w http.ResponseWriter, r *http.Request, params ht
 
 // FROMDA EKLEDİĞİMİZ VERİLERİ SİLME İŞLEMİNİ BURADAKİ KISIM İLE GERÇEKLEŞTİRİYORUZ.
 func (dashboard Dashboard) Delete(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	if !helpers.CheckUser(w, r) { //ÖNEMLİ: if !helpers.CheckUser(w, r) helpers BAŞINDAKİ ! ÜNLEM İŞARETİ OLMADAN SİTEYE GİRİŞİ YÖNLENDİRMİYOR ADMİN PANELİNDEN MUTLAKA BU OLMALI.
+		return
+
+	}
 	post := models.Post{}.Get(params.ByName("id")) //PARAMETRELERİ params.ByName İLE ALIYORUZ.
 	post.Delete()
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
@@ -111,6 +123,10 @@ func (dashboard Dashboard) Delete(w http.ResponseWriter, r *http.Request, params
 
 // dashboar İÇERİSİNDE edit ADINDA YENİ BİR KLASÖR KOPYALIYORUZ BU KLASÖR add DEN KOPYALANDI VE AYNISI, BURADA YAPILACAK OLAN KISIM İSE EDİT İŞELMLERİ İÇİRİSİNDEKİ KISIMLARI KONTROLLÜ
 func (dashboard Dashboard) Edit(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	if !helpers.CheckUser(w, r) { //ÖNEMLİ: if !helpers.CheckUser(w, r) helpers BAŞINDAKİ ! ÜNLEM İŞARETİ OLMADAN SİTEYE GİRİŞİ YÖNLENDİRMİYOR ADMİN PANELİNDEN MUTLAKA BU OLMALI.
+		return
+
+	}
 	view, err := template.ParseFiles(helpers.Include("dashboard/edit")...)
 	if err != nil {
 		fmt.Println(err)
@@ -124,6 +140,10 @@ func (dashboard Dashboard) Edit(w http.ResponseWriter, r *http.Request, params h
 
 }
 func (dashboard Dashboard) Update(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	if !helpers.CheckUser(w, r) { //ÖNEMLİ: if !helpers.CheckUser(w, r) helpers BAŞINDAKİ ! ÜNLEM İŞARETİ OLMADAN SİTEYE GİRİŞİ YÖNLENDİRMİYOR ADMİN PANELİNDEN MUTLAKA BU OLMALI.
+		return
+
+	}
 	//BURADA NEYİ UPDATE EDECEKSEK ONU ALIYORUZ ÖNCE
 	post := models.Post{}.Get(params.ByName("id")) //BURADA FORMDAKİ HANGİ YERİ DEĞİŞTİRECEKSEK ONU BURAYA ALMIŞ OLDUK. HANGİ KAYDI GÜNCELLEYECEKSEK İD ÜZERİNDEN ALDIK GETİRDİK POST İÇERİSNE ATTIK
 	title := r.FormValue("blog-title")

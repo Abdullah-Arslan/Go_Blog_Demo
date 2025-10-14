@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+// EĞER KULLANICI ADI VE ŞİFRE HATALIDIR MESAJI, HOŞÇALIN, GİBİ ALERTLER VERİLMİYORSA BUNUN NEDENİ uerops/login/index.html deki {{template "scripts"}}
+// {{ template "alert" .Alert}} tanımlamasının yapılmamasından dolayıdır.
 // BURADA ALET İŞLEMLERİ YAPIYORUZ VE ONUNLA İLGİLİ KOMUTLARI YAZIYORUZ
 var store = sessions.NewCookieStore([]byte("123456"))
 
